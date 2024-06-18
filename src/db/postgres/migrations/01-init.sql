@@ -3,12 +3,12 @@ CREATE TABLE IF NOT EXISTS users(
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE,
-  passwords VARCHAR(100) NOT NULL
+  password VARCHAR(100) NOT NULL
 );
 
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'transaction_type' THEN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'transaction_type') THEN
       CREATE TYPE transaction_type AS ENUM ('EARNING', 'EXPENSE', 'INVESTMENT');
   END IF;
 END$$;
