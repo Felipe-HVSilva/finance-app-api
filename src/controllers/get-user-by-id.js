@@ -8,7 +8,7 @@ export class GetUserByIdController {
             const isIdValid = checkIfIdIsValid(httpRequest.params.userId)
 
             if (!isIdValid) {
-                invalidIdResponse()
+                return invalidIdResponse()
             }
 
             const userId = httpRequest.params.userId

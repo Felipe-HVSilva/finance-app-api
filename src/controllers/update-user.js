@@ -19,7 +19,7 @@ export class UpdateUserController {
             const isIdValid = checkIfIdIsValid(userId)
 
             if (!isIdValid) {
-                invalidIdResponse()
+                return invalidIdResponse()
             }
 
             const params = httpRequest.body
@@ -45,7 +45,7 @@ export class UpdateUserController {
                 const passwordIsValid = checkIsPasswordIsValid(params.password)
 
                 if (!passwordIsValid) {
-                    invalidPasswordResponse()
+                    return invalidPasswordResponse()
                 }
             }
 
@@ -53,7 +53,7 @@ export class UpdateUserController {
                 const emailIsValid = checkIsEmailIsValid(params.email)
 
                 if (!emailIsValid) {
-                    emailIsAlreadyInUseResponse()
+                    return emailIsAlreadyInUseResponse()
                 }
             }
 

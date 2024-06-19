@@ -32,13 +32,13 @@ export class CreateUserController {
             const passwordIsValid = checkIsPasswordIsValid(params.password)
 
             if (!passwordIsValid) {
-                invalidPasswordResponse()
+                return invalidPasswordResponse()
             }
 
             const emailIsValid = checkIsEmailIsValid(params.email)
 
             if (!emailIsValid) {
-                emailIsAlreadyInUseResponse()
+                return emailIsAlreadyInUseResponse()
             }
 
             const createUserUseCase = new CreateUserUseCase()
