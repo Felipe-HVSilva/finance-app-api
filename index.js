@@ -4,15 +4,21 @@ import {
     CreateUserController,
     GetUserByIdController,
     UpdateUserController,
+    DeleteUserController,
 } from './src/controllers/index.js'
-import { PostgresGetUserByIdRepository } from './src/repositories/postgres/get-user-by-id.js'
-import { PostgresCreateUserRepository } from './src/repositories/postgres/create-user.js'
-import { PostgresGetUserByEmailRepository } from './src/repositories/postgres/get-user-by-email.js'
-import { PostgresUpdateUserRepository } from './src/repositories/postgres/update-user.js'
+import {
+    PostgresGetUserByIdRepository,
+    PostgresCreateUserRepository,
+    PostgresGetUserByEmailRepository,
+    PostgresUpdateUserRepository,
+    PostgresDeleteUserRepository,
+} from './src/repositories/postgres/index.js'
+
 import {
     CreateUserUseCase,
     GetUserByIdUseCase,
     UpdateUserUseCase,
+    DeleteUserUseCase,
 } from './src/use-cases/index.js'
 
 const app = express()
@@ -57,6 +63,29 @@ app.post('/api/users', async (request, response) => {
 
     const createUserController = new CreateUserController(createUserUseCase)
     const { statusCode, body } = await createUserController.execute(request)
+
+    response.status(statusCode).json(body)
+})
+
+app.post('/api/users', async (request, response) => {
+    const deleteUserRepository = new PostgresDeleteUserRepository()
+
+    const deleteUserUseCase = new DeleteUserUseCase(deleteUserRepository)
+
+    const createUserController = new DeleteUserController(deleteUserUseCase)
+    const { statusCode, body } = await createUserController.execute(request)
+
+    response.status(statusCode).json(body)
+})
+
+app.delete('/api/users/:userId', async (request, response) => {
+    const deleteUserRepository = new PostgresDeleteUserRepository()
+
+    const deleteUserUseCase = new DeleteUserUseCase(deleteUserRepository)
+
+    const deleteUserController = new DeleteUserController(deleteUserUseCase)
+
+    const { statusCode, body } = await deleteUserController.execute(request)
 
     response.status(statusCode).json(body)
 })
