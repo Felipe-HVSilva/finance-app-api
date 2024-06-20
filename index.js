@@ -5,11 +5,10 @@ import {
     GetUserByIdController,
     UpdateUserController,
 } from './src/controllers/index.js'
-import { GetUserByIdUseCase } from './src/use-cases/get-user-by-id.js'
 import { PostgresGetUserByIdRepository } from './src/repositories/postgres/get-user-by-id.js'
 import { PostgresCreateUserRepository } from './src/repositories/postgres/create-user.js'
 import { PostgresGetUserByEmailRepository } from './src/repositories/postgres/get-user-by-email.js'
-import { CreateUserUseCase } from './src/use-cases/create-user.js'
+import { CreateUserUseCase, GetUserByIdUseCase } from './src/use-cases/index.js'
 
 const app = express()
 
@@ -39,8 +38,8 @@ app.post('/api/users', async (request, response) => {
     const getUserByEmailRepository = new PostgresGetUserByEmailRepository()
 
     const createUserUseCase = new CreateUserUseCase(
-        createUserRepository,
         getUserByEmailRepository,
+        createUserRepository,
     )
 
     const createUserController = new CreateUserController(createUserUseCase)
