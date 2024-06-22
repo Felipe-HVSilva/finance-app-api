@@ -2,7 +2,7 @@ import { CreateTransactionController } from '../../controllers/index.js'
 import {
     PostgresCreateTransactionRepository,
     PostgresGetUserByIdRepository,
-} from '../../repositories/postgres/index'
+} from '../../repositories/postgres/index.js'
 import { CreateTransactionUseCase } from '../../use-cases/index.js'
 
 export const makeCreateTransactionController = () => {
