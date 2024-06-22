@@ -61,7 +61,7 @@ export class CreateTransactionController {
                 })
             }
 
-            const transaction = this.createTransactionUseCase.execute({
+            const transaction = await this.createTransactionUseCase.execute({
                 ...params,
                 type,
             })
