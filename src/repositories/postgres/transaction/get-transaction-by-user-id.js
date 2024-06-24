@@ -7,6 +7,6 @@ export class PostgresGetTransactionByUserId {
             [userId],
         )
 
-        return transaction[0]
+        return transaction
     }
 }
