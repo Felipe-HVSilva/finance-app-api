@@ -7,6 +7,12 @@ export const invalidPasswordResponse = () => {
     return badRequest({ message: 'Password must be at least 6 characters.' })
 }
 
+export const requiredFieldsIsMissingResponse = (field) => {
+    badRequest({
+        message: `The field ${field} is required`,
+    })
+}
+
 export const checkIsString = (value) => typeof value === 'string'
 
 export const validateRequiredFiled = (params, requiredFields) => {
