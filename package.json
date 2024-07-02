@@ -8,13 +8,16 @@
         "postinstall": "npx husky install",
         "migrations:run": "node src/db/postgres/migrations/exec.js",
         "start:dev": "node --watch index.js",
-        "test": "jest",
+        "test": "jest --passWithNoTests",
         "test:watch": "jest --watch"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@babel/core": "^7.24.7",
+        "@babel/preset-env": "^7.24.7",
+        "babel-jest": "^29.7.0",
         "eslint": "^8.46.0",
         "git-commit-msg-linter": "^5.0.8",
         "husky": "^8.0.3",
