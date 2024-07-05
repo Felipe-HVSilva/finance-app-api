@@ -147,4 +147,17 @@ describe('CreateTransactionController', () => {
 
         expect(response.statusCode).toBe(400)
     })
+
+    it('should return 400 when amount is not a valid currency', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            body: {
+                ...baseHttpRequest.body,
+                amount: 'invalid_amount',
+            },
+        })
+
+        expect(response.statusCode).toBe(400)
+    })
 })
