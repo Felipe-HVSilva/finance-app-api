@@ -1,9 +1,9 @@
 import {
-    badRequest,
     checkIfIdIsValid,
     invalidIdResponse,
     notFound,
     ok,
+    serverError,
 } from '../helpers/index.js'
 
 export class DeleteTransactionController {
@@ -27,7 +27,7 @@ export class DeleteTransactionController {
             return ok(deletedUser)
         } catch (error) {
             console.error(error)
-            return badRequest({ message: 'Internal server error' })
+            return serverError()
         }
     }
 }
