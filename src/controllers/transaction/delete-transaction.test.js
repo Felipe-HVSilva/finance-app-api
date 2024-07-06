@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { DeleteTransactionController } from './delete-transaction.js'
 
 describe('Delete Transaction Controller', () => {
-    class DeleteTransactionControllerStub {
+    class DeleteTransactionUseCaseStub {
         async execute() {
             return {
                 user_id: faker.string.uuid(),
@@ -16,11 +16,10 @@ describe('Delete Transaction Controller', () => {
     }
 
     const makeSut = () => {
-        const deleteTransactionController =
-            new DeleteTransactionControllerStub()
-        const sut = new DeleteTransactionController(deleteTransactionController)
+        const deleteTransactionUseCase = new DeleteTransactionUseCaseStub()
+        const sut = new DeleteTransactionController(deleteTransactionUseCase)
 
-        return { sut, deleteTransactionController }
+        return { sut, deleteTransactionUseCase }
     }
     it('should return 200 when deleting transaction successfully', async () => {
         const { sut } = makeSut()
@@ -40,5 +39,19 @@ describe('Delete Transaction Controller', () => {
         })
 
         expect(response.statusCode).toBe(400)
+    })
+
+    it('should return 404 when transaction is not found', async () => {
+        const { sut, deleteTransactionUseCase } = makeSut()
+
+        jest.spyOn(deleteTransactionUseCase, 'execute').mockResolvedValueOnce(
+            null,
+        )
+
+        const response = await sut.execute({
+            params: { transactionId: faker.string.uuid() },
+        })
+
+        expect(response.statusCode).toBe(404)
     })
 })
