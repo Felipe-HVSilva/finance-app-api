@@ -40,7 +40,7 @@ describe('Get Transaction By User ID Controller', () => {
         const { sut } = makeSut()
 
         const response = await sut.execute({
-            query: { userId: 'invalid' },
+            query: { userId: undefined },
         })
 
         expect(response.statusCode).toBe(400)
