@@ -8,7 +8,7 @@ export const invalidPasswordResponse = () => {
 }
 
 export const requiredFieldsIsMissingResponse = (field) => {
-    badRequest({
+    return badRequest({
         message: `The field ${field} is required`,
     })
 }
