@@ -4,8 +4,8 @@ import {
     invalidIdResponse,
     ok,
     requiredFieldsIsMissingResponse,
-    badRequest,
     serverError,
+    notFound,
 } from '../helpers/index.js'
 
 export class GetTransactionByUserIdController {
@@ -35,7 +35,7 @@ export class GetTransactionByUserIdController {
         } catch (error) {
             console.error(error)
             if (error instanceof UserNotFoundError) {
-                return badRequest({
+                return notFound({
                     message: 'User not found',
                 })
             }
