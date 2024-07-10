@@ -21,20 +21,22 @@ describe('Update Transaction Controller', () => {
         return { sut, updateTransactionUseCase }
     }
 
+    const baseHttpRequest = {
+        params: {
+            transactionId: faker.string.uuid(),
+        },
+        body: {
+            name: faker.commerce.productName(),
+            date: faker.date.anytime().toISOString(),
+            type: 'EXPENSE',
+            amount: Number(faker.finance.amount()),
+        },
+    }
+
     it('should return 200 when updating a transaction sucessfully', async () => {
         const { sut } = makeSut()
 
-        const response = await sut.execute({
-            params: {
-                transactionId: faker.string.uuid(),
-            },
-            body: {
-                name: faker.commerce.productName(),
-                date: faker.date.anytime().toISOString(),
-                type: 'EXPENSE',
-                amount: Number(faker.finance.amount()),
-            },
-        })
+        const response = await sut.execute(baseHttpRequest)
 
         expect(response.statusCode).toBe(200)
     })
@@ -46,11 +48,19 @@ describe('Update Transaction Controller', () => {
             params: {
                 transactionId: 'invalid_id',
             },
+        })
+
+        expect(response.statusCode).toBe(400)
+    })
+
+    it('should return 400 when unallowed field is provided', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            ...baseHttpRequest,
             body: {
-                name: faker.commerce.productName(),
-                date: faker.date.anytime().toISOString(),
-                type: 'EXPENSE',
-                amount: Number(faker.finance.amount()),
+                ...baseHttpRequest.body,
+                unallowed_field: 'unallowed',
             },
         })
 
