@@ -36,8 +36,24 @@ describe('Update Transaction Controller', () => {
             },
         })
 
-        console.log(response)
-
         expect(response.statusCode).toBe(200)
+    })
+
+    it('should return 400 when transaction id is invalid', async () => {
+        const { sut } = makeSut()
+
+        const response = await sut.execute({
+            params: {
+                transactionId: 'invalid_id',
+            },
+            body: {
+                name: faker.commerce.productName(),
+                date: faker.date.anytime().toISOString(),
+                type: 'EXPENSE',
+                amount: Number(faker.finance.amount()),
+            },
+        })
+
+        expect(response.statusCode).toBe(400)
     })
 })
