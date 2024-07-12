@@ -4,7 +4,7 @@ import {
     checkIfIdIsValid,
     invalidIdResponse,
     ok,
-    badRequest,
+    notFound,
 } from '../helpers/index.js'
 
 export class GetUserBalanceController {
@@ -26,7 +26,7 @@ export class GetUserBalanceController {
             return ok(balance)
         } catch (error) {
             if (error instanceof UserNotFoundError) {
-                return badRequest({
+                return notFound({
                     message: 'User not found',
                 })
             }
