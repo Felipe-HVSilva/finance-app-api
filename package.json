@@ -8,8 +8,9 @@
         "postinstall": "npx husky install",
         "migrations:run": "node src/db/postgres/migrations/exec.js",
         "start:dev": "node --watch index.js",
-        "test": "jest --passWithNoTests",
-        "test:watch": "jest --watch --silent"
+        "test": "jest --passWithNoTests --silent",
+        "test:watch": "jest --watch --silent",
+        "test:coverage": "jest --passWithNoTests --silent --coverage"
     },
     "keywords": [],
     "author": "",
