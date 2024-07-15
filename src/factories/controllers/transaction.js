@@ -1,3 +1,5 @@
+import { IdGeneratorAdapter } from '../../adapters/index.js'
+
 import {
     CreateTransactionController,
     DeleteTransactionController,
@@ -24,10 +26,12 @@ export const makeCreateTransactionController = () => {
     const getUserByIdRepository = new PostgresGetUserByIdRepository()
     const createTransactionRepository =
         new PostgresCreateTransactionRepository()
+    const idGeneratorAdapter = new IdGeneratorAdapter()
 
     const createTransactionUseCase = new CreateTransactionUseCase(
         getUserByIdRepository,
         createTransactionRepository,
+        idGeneratorAdapter,
     )
 
     const createTransactionController = new CreateTransactionController(
