@@ -41,13 +41,13 @@ describe('Crete User Use Case', () => {
         const createUserRepository = new CreateUserRepositoryStub()
 
         const passwordHasherAdapter = new PasswordHasherAdapterStub()
-        const idGenerator = new IdGeneratorAdapterSub()
+        const idGeneratorAdapter = new IdGeneratorAdapterSub()
 
         const sut = new CreateUserUseCase(
             getUserByEmailRespository,
             createUserRepository,
             passwordHasherAdapter,
-            idGenerator,
+            idGeneratorAdapter,
         )
 
         return {
@@ -55,7 +55,7 @@ describe('Crete User Use Case', () => {
             getUserByEmailRespository,
             createUserRepository,
             passwordHasherAdapter,
-            idGenerator,
+            idGeneratorAdapter,
         }
     }
 
@@ -79,5 +79,28 @@ describe('Crete User Use Case', () => {
         await expect(promise).rejects.toThrow(
             new EmailAlreadyInUseError(user.email),
         )
+    })
+
+    it('should call IdGeneratorAdapter to generate a random id', async () => {
+        const {
+            sut,
+            idGeneratorAdapter,
+
+            createUserRepository,
+        } = makeSut()
+        const idGeneratorSpy = jest.spyOn(idGeneratorAdapter, 'execute')
+        const createUserRepositorySpy = jest.spyOn(
+            createUserRepository,
+            'execute',
+        )
+
+        await sut.execute(user)
+
+        expect(idGeneratorSpy).toHaveBeenCalled()
+        expect(createUserRepositorySpy).toHaveBeenCalledWith({
+            ...user,
+            password: 'hashed_password',
+            id: 'generated_id',
+        })
     })
 })
