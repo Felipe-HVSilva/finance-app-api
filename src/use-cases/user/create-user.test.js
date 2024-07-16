@@ -122,4 +122,15 @@ describe('Crete User Use Case', () => {
             id: 'generated_id',
         })
     })
+
+    it('should throw if GetUserByEmailRepository throws', async () => {
+        const { sut, getUserByEmailRespository } = makeSut()
+        jest.spyOn(getUserByEmailRespository, 'execute').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        const promise = sut.execute(user)
+
+        await expect(promise).rejects.toThrow()
+    })
 })
