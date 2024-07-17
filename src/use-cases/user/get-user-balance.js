@@ -10,7 +10,7 @@ export class GetUserBalanceUseCase {
         const user = await this.getUserByIdRepository.execute(userId)
 
         if (!user) {
-            throw new UserNotFoundError('User not found')
+            throw new UserNotFoundError(userId)
         }
 
         const balance = await this.getUserBalanceRepository.execute(userId)
