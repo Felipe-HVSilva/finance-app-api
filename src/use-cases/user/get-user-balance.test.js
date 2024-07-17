@@ -16,7 +16,7 @@ describe('GetUserBalanceUseCase', () => {
         }
     }
 
-    class GetUserByEmailRepositoryStub {
+    class GetUserByIdRepositoryStub {
         async execute() {
             return {
                 id: faker.string.uuid(),
@@ -32,13 +32,13 @@ describe('GetUserBalanceUseCase', () => {
 
     const makeSut = () => {
         const getUserBalanceRepository = new GetUserBalanceRepositoryStub()
-        const getUserByEmailRepository = new GetUserByEmailRepositoryStub()
+        const getUserByIdRepository = new GetUserByIdRepositoryStub()
         const sut = new GetUserBalanceUseCase(
-            getUserByEmailRepository,
+            getUserByIdRepository,
             getUserBalanceRepository,
         )
 
-        return { sut, getUserByEmailRepository, getUserBalanceRepository }
+        return { sut, getUserByIdRepository, getUserBalanceRepository }
     }
 
     it('should get user balance successfully', async () => {
@@ -50,14 +50,22 @@ describe('GetUserBalanceUseCase', () => {
     })
 
     it('should throw UserNotFoundError if GetUserByIdRepository returns null', async () => {
-        const { sut, getUserByEmailRepository } = makeSut()
-        jest.spyOn(getUserByEmailRepository, 'execute').mockResolvedValueOnce(
-            null,
-        )
+        const { sut, getUserByIdRepository } = makeSut()
+        jest.spyOn(getUserByIdRepository, 'execute').mockResolvedValueOnce(null)
         const userId = faker.string.uuid()
 
         const promise = sut.execute(userId)
 
         await expect(promise).rejects.toThrow(new UserNotFoundError(userId))
+    })
+
+    it('should call GetUserByIdRepository with correct params', async () => {
+        const { sut, getUserByIdRepository } = makeSut()
+        const userId = faker.string.uuid()
+        const spy = jest.spyOn(getUserByIdRepository, 'execute')
+
+        await sut.execute(userId)
+
+        expect(spy).toHaveBeenCalledWith(userId)
     })
 })
