@@ -3,7 +3,7 @@ export class DeleteUserUseCase {
         this.deleteUserRepository = deleteUserRepository
     }
     async execute(userId) {
-        const deleteUser = this.deleteUserRepository.execute(userId)
+        const deleteUser = await this.deleteUserRepository.execute(userId)
 
         return deleteUser
     }
