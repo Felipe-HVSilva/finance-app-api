@@ -90,7 +90,7 @@ describe('UpdateUserUseCase', () => {
         expect(result).toBe(user)
     })
 
-    it('should throw EmailAlreadyInUseErro if email is already in use', async () => {
+    it('should throw EmailAlreadyInUseError if email is already in use', async () => {
         const { sut, getUserByEmailRepository } = makeSut()
         jest.spyOn(getUserByEmailRepository, 'execute').mockResolvedValue(user)
 
@@ -123,5 +123,18 @@ describe('UpdateUserUseCase', () => {
             email: user.email,
             password: 'password-hasher',
         })
+    })
+
+    it('should throw if GetUserByEmailRepository throws', async () => {
+        const { sut, getUserByEmailRepository } = makeSut()
+        jest.spyOn(getUserByEmailRepository, 'execute').mockRejectedValue(
+            new Error(),
+        )
+
+        const promise = sut.execute(faker.string.uuid(), {
+            email: user.email,
+        })
+
+        await expect(promise).rejects.toThrow()
     })
 })
