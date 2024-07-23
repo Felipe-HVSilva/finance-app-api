@@ -35,4 +35,18 @@ describe('GetTransactionByUserId', () => {
 
         expect(result).toEqual([])
     })
+
+    it('should call GetTransactionByUserId with correct params', async () => {
+        const { sut, getTransactionByUserIdRepository } = makeSut()
+        const getTransactionByUserIdRepositorySpy = jest.spyOn(
+            getTransactionByUserIdRepository,
+            'execute',
+        )
+
+        await sut.execute(user.id)
+
+        expect(getTransactionByUserIdRepositorySpy).toHaveBeenCalledWith(
+            user.id,
+        )
+    })
 })
