@@ -1,10 +1,11 @@
 import { EmailAlreadyInUseError } from '../../errors/user'
 import { CreateUserController } from './create-user'
+import { user } from '../../tests/index.js'
 import { faker } from '@faker-js/faker'
 
-describe('Create User Controller', () => {
+describe('CreateUserController', () => {
     class CreateUserUseCaseStub {
-        execute(user) {
+        execute() {
             return user
         }
     }
@@ -17,12 +18,8 @@ describe('Create User Controller', () => {
 
     const httpRequest = {
         body: {
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
-            email: faker.internet.email(),
-            password: faker.internet.password({
-                length: 7,
-            }),
+            ...user,
+            id: undefined,
         },
     }
 
@@ -32,7 +29,7 @@ describe('Create User Controller', () => {
         const result = await sut.execute(httpRequest)
 
         expect(result.statusCode).toBe(201)
-        expect(result.body).toEqual(httpRequest.body)
+        expect(result.body).toEqual(user)
     })
 
     it('should return 400 if first_name is not provided', async () => {
@@ -101,16 +98,6 @@ describe('Create User Controller', () => {
 
     it('should be return 400 if password is less than 6 characters', async () => {
         const { sut } = makeSut()
-        const httpRequest = {
-            body: {
-                first_name: faker.person.firstName(),
-                last_name: faker.person.lastName(),
-                email: faker.internet.email(),
-                password: faker.internet.password({
-                    length: 5,
-                }),
-            },
-        }
 
         const result = await sut.execute({
             body: {
