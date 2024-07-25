@@ -1,6 +1,6 @@
 import { prisma } from '../../../../prisma/prisma'
 import { PostgresCreateTransactionRepository } from './create-transaction.js'
-import { transaction, user as fakeUser } from '../../../tests/index.js'
+import { transaction, user as fakeUser, user } from '../../../tests/index.js'
 import dayjs from 'dayjs'
 
 describe('PostgresCreateTransactionRepository', () => {
@@ -34,5 +34,16 @@ describe('PostgresCreateTransactionRepository', () => {
                 user_id: user.id,
             },
         })
+    })
+
+    it('should throw if Prisma throws', async () => {
+        const sut = new PostgresCreateTransactionRepository()
+        jest.spyOn(prisma.transaction, 'create').mockRejectedValueOnce(
+            new Error(),
+        )
+
+        const promise = sut.execute({ ...transaction, user_id: user.id })
+
+        await expect(promise).rejects.toThrow()
     })
 })
