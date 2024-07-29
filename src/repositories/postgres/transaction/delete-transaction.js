@@ -15,7 +15,7 @@ export class PostgresDeleteTransactionRepository {
                 const code = error.code
 
                 if (code === 'P2025') {
-                    throw new TransactionNotFoundError()
+                    throw new TransactionNotFoundError(transactionId)
                 }
             }
 
