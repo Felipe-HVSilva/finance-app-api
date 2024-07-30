@@ -165,4 +165,18 @@ describe('User Routes E2E Test', () => {
 
         expect(response.status).toBe(400)
     })
+
+    it('POST /api/user should return 400 when password is less 6 character', async () => {
+        const passwordLessThanSixCharacter = '12345'
+        const response = await request(app)
+            .post('/api/users')
+            .send({
+                ...user,
+                id: undefined,
+                password: passwordLessThanSixCharacter,
+            })
+
+        expect(response.status).toBe(400)
+        expect(passwordLessThanSixCharacter.length).toBeLessThan(6)
+    })
 })
