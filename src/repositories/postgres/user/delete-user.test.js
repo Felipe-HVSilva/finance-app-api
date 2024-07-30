@@ -1,3 +1,4 @@
+//import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { prisma } from '../../../../prisma/prisma'
 import { user } from '../../../tests/index.js'
 import { PostgresDeleteUserRepository } from './delete-user.js'
@@ -15,6 +16,7 @@ describe('PostgresDeleteUserRepository', () => {
     })
 
     it('should call Prisma with correct params', async () => {
+        await prisma.user.create({ data: user })
         const sut = new PostgresDeleteUserRepository()
         const prismaSpy = jest.spyOn(prisma.user, 'delete')
 
@@ -25,5 +27,14 @@ describe('PostgresDeleteUserRepository', () => {
                 id: user.id,
             },
         })
+    })
+
+    it('should generic error if Prisma throws generic error', async () => {
+        const sut = new PostgresDeleteUserRepository()
+        jest.spyOn(prisma.user, 'create').mockRejectedValueOnce(new Error())
+
+        const promise = sut.execute(user.id)
+
+        await expect(promise).rejects.toThrow()
     })
 })
