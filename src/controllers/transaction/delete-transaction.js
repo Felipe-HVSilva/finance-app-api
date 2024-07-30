@@ -4,8 +4,9 @@ import {
     notFound,
     ok,
     serverError,
+    transactionNotFoundResponse,
 } from '../helpers/index.js'
-
+import { TransactionNotFoundError } from '../../errors/index.js'
 export class DeleteTransactionController {
     constructor(deleteTransactionUseCase) {
         this.deleteTransactionUseCase = deleteTransactionUseCase
@@ -19,13 +20,17 @@ export class DeleteTransactionController {
                 return invalidIdResponse()
             }
 
-            const deletedUser =
+            const deletedTransaction =
                 await this.deleteTransactionUseCase.execute(transactionId)
-            if (!deletedUser) {
+
+            if (!deletedTransaction) {
                 return notFound()
             }
-            return ok(deletedUser)
+            return ok(deletedTransaction)
         } catch (error) {
+            if (error instanceof TransactionNotFoundError) {
+                return transactionNotFoundResponse()
+            }
             console.error(error)
             return serverError()
         }
