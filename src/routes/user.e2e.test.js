@@ -141,7 +141,7 @@ describe('User Routes E2E Test', () => {
         }
 
         const response = await request(app)
-            .get(`/api/users/${faker.string.uuid()}`)
+            .patch(`/api/users/${faker.string.uuid()}`)
             .send(updatedUserParams)
 
         expect(response.status).toBe(404)
