@@ -264,6 +264,50 @@
                     }
                 }
             }
+        },
+
+        "/api/transactions/{transactionId}": {
+            "patch": {
+                "summary": "Update transaction by ID",
+                "tags": ["Transaction"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "transactionId",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the transaction "
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateTransactionParam"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid params"
+                    },
+                    "404": {
+                        "description": "Transaction not found"
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
 
@@ -377,6 +421,28 @@
                     "type": "string",
                     "example": "easa3efawfawf-darwra-daddad-dadad"
                 },
+                "name": {
+                    "type": "string",
+                    "example": "Salary"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "EARNING",
+                    "description": "EARNING, INVESTMENT OR EXPENSE"
+                },
+                "amount": {
+                    "type": "number",
+                    "example": 100
+                },
+                "date": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00"
+                }
+            }
+        },
+        "UpdateTransactionParam": {
+            "type": "object",
+            "properties": {
                 "name": {
                     "type": "string",
                     "example": "Salary"
